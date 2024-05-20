@@ -1,21 +1,26 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 import css from "./SearchBar.module.css";
 
-const SearchBar = ({ onSubmit }) => {
+
+interface SerchBarProps {
+  onSearch: (value: string) => void;
+}
+
+const SearchBar: React.FC<SerchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState("");
-  //   console.log(query);
-  const handleSubmit = (e) => {
+ 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (!query.trim()) {
-      return toast.error("Can not be empty");
+    if (query.trim() === "") {
+      toast.error("Can not be empty");
     }
-    onSubmit(query);
+     onSearch(query);
     setQuery("");
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
   };
   return (

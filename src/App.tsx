@@ -8,30 +8,39 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { Image } from "./types";
 
 const App = () => {
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(true);
-  const [isVisible, setVisible] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [url, setUrl] = useState("");
-  const [alt, setAlt] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [images, setImages] = useState<Image[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<unknown>(null);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isVisible, setVisible] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
+  const [alt, setAlt] = useState<string>("");
+
+  interface Interface {
+    total_pages: number;
+    results: Image[];
+  }
 
   useEffect(() => {
     if (!query) return;
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       setLoading(true);
       try {
-        const { results, total_pages } = await getPhotos(query, page);
+        const { results, total_pages }: Interface = await getPhotos(query, page);
         // console.log(results);
         if (!results.length) {
-          setIsEmpty(true);
+          setIsEmpty(false);
           return;
         }
+
+        // const data: Interface = await fetchData(query, page);
+
         setImages((prevImages) => [...prevImages, ...results]);
         setVisible(page < total_pages);
       } catch (error) {
@@ -41,32 +50,33 @@ const App = () => {
       }
     };
     fetchData();
-  }, [page, query]);
+  }, [query, page]);
 
-  const onHandleSubmit = (value) => {
+  const onHandleSubmit = (value: string): void => {
     setQuery(value);
     setIsEmpty(false);
     setImages([]);
     setPage(1);
+    setError(false);
   };
 
-  const openModal = (url, alt) => {
+  const openModal = (obj: Image): void => {
     setShowModal(true);
     setUrl(url);
     setAlt(alt);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setShowModal(false);
     setUrl("");
     setAlt("");
   };
 
-  const onClick = () => setPage((prevPage) => prevPage + 1);
+  const onClick = (): void => setPage((prevPage) => prevPage + 1);
   // console.log(page);
   return (
     <div>
-      <SearchBar onSubmit={onHandleSubmit} />
+      <SearchBar onSearch={onHandleSubmit} />
       {isEmpty && <p>Start search...</p>}
       <Toaster />
       {images.length > 0 && (
