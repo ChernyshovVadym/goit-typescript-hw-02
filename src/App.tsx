@@ -93,7 +93,7 @@ const App = () => {
 
       {isVisible && <LoadMoreBtn onClick={onClick} />}
       {loading && <Loader />}
-      {error && <ErrorMessage/>}
+      {/* {error && <ErrorMessage/>} */}
     </div>
   );
 };

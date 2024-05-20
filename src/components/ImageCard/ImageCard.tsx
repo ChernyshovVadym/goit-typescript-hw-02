@@ -6,7 +6,7 @@ import css from "./ImageCard.module.css";
 
 interface ImageCardProps {
   image: Image;
-  openModal: (obj: Image) => void;
+  openModal: (obj: Image ) => void;
 }
 const ImageCard: React.FC<ImageCardProps> = ({ image, openModal }) => {
   return (
@@ -15,7 +15,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, openModal }) => {
         src={image.urls.small}
         alt={image.alt_description}
         className={css.img}
-        onClick={() => openModal(image.urls.regular, image.alt_description)}
+        onClick={() => openModal(image)}
       />
     </div>
   );

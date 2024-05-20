@@ -6,7 +6,6 @@ const Loader = () => {
       visible={true}
       height="80"
       width="80"
-      color="#1dca06"
       ariaLabel="progress-bar-loading"
     />
   );
