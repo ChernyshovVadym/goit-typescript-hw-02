@@ -16,7 +16,6 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 interface ImageModalProps {
-  showModal: boolean;
   url: string;
   alt: string;
   modalIsOpen: boolean;

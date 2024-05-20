@@ -10,6 +10,7 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageModal from "./components/ImageModal/ImageModal";
 import { Image } from "./types";
 
+
 const App = () => {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -31,16 +32,16 @@ const App = () => {
     if (!query) return;
     const fetchData = async (): Promise<void> => {
       setLoading(true);
+      setError(false);
       try {
         const { results, total_pages }: Interface = await getPhotos(query, page);
+
         // console.log(results);
         if (!results.length) {
-          setIsEmpty(false);
+          setIsEmpty(true);
           return;
         }
-
         // const data: Interface = await fetchData(query, page);
-
         setImages((prevImages) => [...prevImages, ...results]);
         setVisible(page < total_pages);
       } catch (error) {
@@ -92,7 +93,7 @@ const App = () => {
 
       {isVisible && <LoadMoreBtn onClick={onClick} />}
       {loading && <Loader />}
-      {error && <ErrorMessage />}
+      {error && <ErrorMessage/>}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { Image } from "../../types";
 import css from "./ImageGallery.module.css";
 
 interface ImageGalleryProps {
-  image: Image[];
+  images: Image[];
   openModal: (obj: Image) => void;
 }
 
